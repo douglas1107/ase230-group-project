@@ -1,0 +1,121 @@
+[
+    {
+        "team_name": "The Sharks",
+        "players": [
+            {
+                "name": "Alice Johnson",
+                "number": 10
+            },
+            {
+                "name": "Bob Smith",
+                "number": 11
+            },
+            {
+                "name": "Charlie Brown",
+                "number": 12
+            }
+        ]
+    },
+    {
+        "team_name": "The Eagles",
+        "players": [
+            {
+                "name": "David Wilson",
+                "number": 7
+            },
+            {
+                "name": "Emma Davis",
+                "number": 8
+            },
+            {
+                "name": "Fiona Garcia",
+                "number": 9
+            }
+        ]
+    },
+    {
+        "team_name": "The Giants",
+        "players": [
+            {
+                "name": "Doug",
+                "number": "1"
+            },
+            {
+                "name": "Sean",
+                "number": "2"
+            },
+            {
+                "name": "Cambo",
+                "number": "3"
+            }
+        ]
+    },
+    {
+        "team_name": "The Panthers",
+        "players": [
+            {
+                "name": "Rachel Adams",
+                "number": 4
+            },
+            {
+                "name": "Michael Thompson",
+                "number": 5
+            },
+            {
+                "name": "Olivia Martinez",
+                "number": 6
+            }
+        ]
+    },
+    {
+        "team_name": "The Bulls",
+        "players": [
+            {
+                "name": "James Miller",
+                "number": 13
+            },
+            {
+                "name": "Sophia Wilson",
+                "number": 14
+            },
+            {
+                "name": "Noah Brown",
+                "number": 15
+            }
+        ]
+    },
+    {
+        "team_name": "The Warriors",
+        "players": [
+            {
+                "name": "Liam Johnson",
+                "number": 16
+            },
+            {
+                "name": "Ava Smith",
+                "number": 17
+            },
+            {
+                "name": "Mason Garcia",
+                "number": 18
+            }
+        ]
+    },
+    {
+        "team_name": "The Hawks",
+        "players": [
+            {
+                "name": "Isabella Lee",
+                "number": 19
+            },
+            {
+                "name": "Ethan Perez",
+                "number": 20
+            },
+            {
+                "name": "Chloe Kim",
+                "number": 21
+            }
+        ]
+    }
+]

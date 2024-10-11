@@ -1,0 +1,128 @@
+[
+    {
+        "game_id": 1,
+        "teams": {
+            "home": {
+                "name": "The Sharks",
+                "score": 5
+            },
+            "away": {
+                "name": "The Eagles",
+                "score": 3
+            }
+        },
+        "date": "2024-10-05"
+    },
+    {
+        "game_id": 2,
+        "teams": {
+            "home": {
+                "name": "The Eagles",
+                "score": 4
+            },
+            "away": {
+                "name": "The Sharks",
+                "score": 2
+            }
+        },
+        "date": "2024-10-06"
+    },
+    {
+        "game_id": 3,
+        "teams": {
+            "home": {
+                "name": "The Giants",
+                "score": "5"
+            },
+            "away": {
+                "name": "The Sharks",
+                "score": "4"
+            }
+        },
+        "date": "2024-10-09"
+    },
+    {
+        "game_id": 4,
+        "teams": {
+            "home": {
+                "name": "The Giants",
+                "score": "5"
+            },
+            "away": {
+                "name": "The Eagles",
+                "score": "1"
+            }
+        },
+        "date": "2024-10-03"
+    },
+    {
+        "game_id": 5,
+        "teams": {
+            "home": {
+                "name": "The Panthers",
+                "score": 6
+            },
+            "away": {
+                "name": "The Bulls",
+                "score": 4
+            }
+        },
+        "date": "2024-10-10"
+    },
+    {
+        "game_id": 6,
+        "teams": {
+            "home": {
+                "name": "The Warriors",
+                "score": 7
+            },
+            "away": {
+                "name": "The Hawks",
+                "score": 5
+            }
+        },
+        "date": "2024-10-11"
+    },
+    {
+        "game_id": 7,
+        "teams": {
+            "home": {
+                "name": "The Hawks",
+                "score": 3
+            },
+            "away": {
+                "name": "The Panthers",
+                "score": 2
+            }
+        },
+        "date": "2024-10-12"
+    },
+    {
+        "game_id": 8,
+        "teams": {
+            "home": {
+                "name": "The Bulls",
+                "score": 8
+            },
+            "away": {
+                "name": "The Giants",
+                "score": 6
+            }
+        },
+        "date": "2024-10-13"
+    },
+    {
+        "game_id": 9,
+        "teams": {
+            "home": {
+                "name": "The Eagles",
+                "score": 2
+            },
+            "away": {
+                "name": "The Warriors",
+                "score": 3
+            }
+        },
+        "date": "2024-10-14"
+    }
+]
