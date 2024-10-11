@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+ 
 // Define the CSV file path
 $csvFile = '../data/users.csv';
   

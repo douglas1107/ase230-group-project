@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $name = $_SESSION['name'];
 $email = $_SESSION['email'];
 $role = $_SESSION['role'];
-
+ 
  
 function loadTeams($filename) {
     if (file_exists($filename)) {
