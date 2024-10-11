@@ -9,7 +9,7 @@ $name = $_SESSION['name'];
 $email = $_SESSION['email'];
 $role = $_SESSION['role'];
 
-
+ 
 function loadTeams($filename) {
     if (file_exists($filename)) {
         return json_decode(file_get_contents($filename), true);

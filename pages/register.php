@@ -3,7 +3,7 @@ session_start();
 
 // Define the CSV file path
 $csvFile = '../data/users.csv';
-
+  
 // Initialize variables
 $nameErr = $emailErr = $passwordErr = $roleErr = '';
 $name = $email = $password = $role = '';
