@@ -1,18 +1,14 @@
 <?php
 session_start();
  
-// Define the CSV file path
 $csvFile = '../data/users.csv';
   
-// Initialize variables
 $nameErr = $emailErr = $passwordErr = $roleErr = '';
 $name = $email = $password = $role = '';
 
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $isValid = true;
 
-    // Validate name
     if (empty($_POST["name"])) {
         $nameErr = "Name is required";
         $isValid = false;
@@ -20,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = htmlspecialchars($_POST["name"]);
     }
 
-    // Validate email
     if (empty($_POST["email"])) {
         $emailErr = "Email is required";
         $isValid = false;
@@ -31,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = htmlspecialchars($_POST["email"]);
     }
 
-    // Validate password
     if (empty($_POST["password"])) {
         $passwordErr = "Password is required";
         $isValid = false;
@@ -39,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST["password"];
     }
 
-    // Validate role
     if (empty($_POST["role"])) {
         $roleErr = "Role is required";
         $isValid = false;
@@ -47,20 +40,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = htmlspecialchars($_POST["role"]);
     }
 
-    // If all inputs are valid, save the data
     if ($isValid) {
-        // Generate a unique ID for the new user
         $newId = uniqid();
 
-        // Append the new user's details to the CSV file
         $newUser = [$newId, $name, $email, $password, $role];
-        
-        // Open CSV file in append mode
+
         if (($file = fopen($csvFile, 'a')) !== false) {
-            // Write the new user data
             fputcsv($file, $newUser);
             fclose($file);
-            // Redirect to login page after registration
             header('Location: login.php');
             exit;
         } else {
