@@ -6,6 +6,7 @@ if (!isset($_SESSION['email'])) {
     exit;
 }
 
+
 header('Location: pages/home.php');
 exit;
 ?>
