@@ -1,5 +1,4 @@
 [
-    
     {
         "game_id": 1,
         "teams": {
@@ -111,19 +110,5 @@
             }
         },
         "date": "2024-10-14"
-    },
-    {
-        "game_id": 10,
-        "teams": {
-            "home": {
-                "name": "Louisville Cardinals",
-                "score": "77"
-            },
-            "away": {
-                "name": "Kentucky Wildcats",
-                "score": "69"
-            }
-        },
-        "date": "2024-10-11"
     }
 ]

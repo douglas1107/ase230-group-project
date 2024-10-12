@@ -111,11 +111,27 @@
             {
                 "name": "Ethan Perez",
                 "number": 20
-                
             },
             {
                 "name": "Chloe Kim",
                 "number": 21
+            }
+        ]
+    },
+    {
+        "team_name": "The Lions",
+        "players": [
+            {
+                "name": "Joe",
+                "number": "22"
+            },
+            {
+                "name": "Bob",
+                "number": "23"
+            },
+            {
+                "name": "John",
+                "number": "24"
             }
         ]
     }
