@@ -1,55 +1,53 @@
 <?php
 session_start();
 
+// Redirect logged-in users to the home page
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     header('Location: home.php');
     exit;
 }
-  
+
+// Include the database connection
+require_once '../lib/db.php';
+
 $email = $password = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
+    // Validate input
     if (empty($email) || empty($password)) {
         $error = 'Please enter both email and password.';
     } else {
+        // Query the database for the user
+        $stmt = $db->prepare("SELECT id, name, email, password, role FROM users WHERE email = ?");
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        $file_path = '../data/users.csv';
-        
-        if (($handle = fopen($file_path, 'r')) !== FALSE) {
-            $user_found = false;
+        if ($result->num_rows === 1) {
+            // Fetch the user record
+            $user = $result->fetch_assoc();
 
-            while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
-                $csv_id = $data[0];   
-                $csv_name = $data[1];   
-                $csv_email = $data[2];    
-                $csv_password = $data[3]; 
-                $csv_role = $data[4];  
+            // Verify the password
+            if (password_verify($password, $user['password'])) {
+                // Set session variables
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['role'] = $user['role'];
 
-                if ($csv_email === $email && $csv_password === $password) {
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['user_id'] = $csv_id;
-                    $_SESSION['name'] = $csv_name;
-                    $_SESSION['email'] = $csv_email;
-                    $_SESSION['role'] = $csv_role;
-        
-                    $login_success = true;
-
-                    header('Location: home.php');
-                    exit;
-                }
-            }
-            fclose($handle);
-
-            if (!$user_found) {
-                $error = 'Email not found.';
+                // Redirect to the home page
+                header('Location: home.php');
+                exit;
+            } else {
+                $error = 'Invalid email or password.';
             }
         } else {
-            $error = 'Unable to open user database.';
+            $error = 'No account found with that email.';
         }
     }
 }
@@ -65,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Login to Sports Our Scorekeeping App</h2>
+        <h2 class="text-center">Login to Our Sports Scorekeeping App</h2>
 
         <?php if ($error): ?>
             <div class="alert alert-danger">

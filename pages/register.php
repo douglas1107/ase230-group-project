@@ -1,8 +1,8 @@
 <?php
 session_start();
- 
-$csvFile = '../data/users.csv';
-  
+
+require_once '../lib/db.php';
+
 $nameErr = $emailErr = $passwordErr = $roleErr = '';
 $name = $email = $password = $role = '';
 
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordErr = "Password is required";
         $isValid = false;
     } else {
-        $password = $_POST["password"];
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     }
 
     if (empty($_POST["role"])) {
@@ -41,17 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($isValid) {
-        $newId = uniqid();
+        $stmt = $db->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('ssss', $name, $email, $password, $role);
 
-        $newUser = [$newId, $name, $email, $password, $role];
-
-        if (($file = fopen($csvFile, 'a')) !== false) {
-            fputcsv($file, $newUser);
-            fclose($file);
+        if ($stmt->execute()) {
             header('Location: login.php');
             exit;
         } else {
-            echo "Error writing to CSV file.";
+            echo "Error: " . $stmt->error;
         }
     }
 }

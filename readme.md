@@ -8,9 +8,14 @@
 
 ## Team Members
 ### Douglas Broughton
+## Midterm 
 - Created and managed repository, Created folder and file structure 
 - Built index.php and the admin pages functions
 - Worked on if statements in login.php and logout.php
+## Final
+- Created sql database tables
+- Switched Admin folders to use sql database instead of data files for CRUD operations
+- 
 ### Sean Cancel
 - Helped to make the login, home, and register pages of code.
 - Helped to debug.

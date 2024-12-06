@@ -1,27 +1,43 @@
 <?php
 session_start();
 
+// Ensure the user is authenticated and has the "viewer" role
 if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'viewer') {
     header('Location: login.php');
     exit();
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+// Include the database connection
+require_once '../lib/db.php';
+
+// Function to load games from the database
+function loadGames($db) {
+    $query = "SELECT g.game_date AS date, 
+                     home.team_name AS home_team, home.score AS home_score, 
+                     away.team_name AS away_team, away.score AS away_score
+              FROM games g
+              JOIN game_teams home ON g.game_id = home.game_id AND home.is_home = 1
+              JOIN game_teams away ON g.game_id = away.game_id AND away.is_home = 0
+              ORDER BY g.game_date ASC";
+    $result = $db->query($query);
+
+    $games = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $games[] = [
+                'teams' => [
+                    'home' => ['name' => $row['home_team'], 'score' => $row['home_score']],
+                    'away' => ['name' => $row['away_team'], 'score' => $row['away_score']]
+                ],
+                'date' => $row['date']
+            ];
+        }
     }
-    return [];
+    return $games;
 }
 
-function loadGames($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
-    }
-    return [];
-}
-
-$teams = loadTeams('../data/teams.json');
-$games = loadGames('../data/games.json');
+// Fetch games from the database
+$games = loadGames($db);
 ?>
 
 <!DOCTYPE html>
