@@ -57,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<?php include('../theme/header.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,5 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
+
 </body>
 </html>
+<?php include('../theme/footer.php'); ?>

@@ -54,6 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+<?php include('../theme/header.php'); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -88,3 +90,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </body>
 </html>
+<?php include('../theme/footer.php'); ?>

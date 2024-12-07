@@ -23,6 +23,7 @@ function loadGames($filename) {
 $teams = loadTeams('../data/teams.json');
 $games = loadGames('../data/games.json');
 ?>
+<?php include('../theme/header.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,3 +54,4 @@ $games = loadGames('../data/games.json');
     </div>
 </body>
 </html>
+<?php include('../theme/footer.php'); ?>
