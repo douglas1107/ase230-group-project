@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css"> <!-- Link to your custom CSS -->
 </head>
 <body>
-    <!-- Header Section with Navbar -->
+    <!-- header Section with Navbar -->
     <div class="container-fluid bg-primary text-white py-3">
         <header>
             <div class="d-flex justify-content-between align-items-center">

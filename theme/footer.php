@@ -1,5 +1,5 @@
 <!-- footer.php -->
-    <!-- Footer Section -->
+    <!-- footer Section -->
     <div class="container-fluid bg-dark text-white py-3 mt-5">
         <footer class="text-center">
             <p class="mb-0">&copy; 2024 Scorekeeper App. All Rights Reserved.</p>
