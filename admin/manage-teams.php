@@ -6,39 +6,54 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'scorekeeper') {
     exit();
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
-    }
-    return [];
-}
+require_once '../lib/db.php';
 
-function saveTeams($filename, $teams) {
-    file_put_contents($filename, json_encode($teams, JSON_PRETTY_PRINT));
+function loadTeams($db) {
+    $query = "SELECT team_name, player_name, player_number FROM teams ORDER BY team_name ASC, player_number ASC";
+    $result = $db->query($query);
+
+    $teams = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $teamName = $row['team_name'];
+            if (!isset($teams[$teamName])) {
+                $teams[$teamName] = ['team_name' => $teamName, 'players' => []];
+            }
+            if ($row['player_name'] && $row['player_number']) {
+                $teams[$teamName]['players'][] = [
+                    'name' => $row['player_name'],
+                    'number' => $row['player_number']
+                ];
+            }
+        }
+    }
+    return array_values($teams);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_team'])) {
     $teamName = htmlspecialchars(trim($_POST['team_name']));
-    $players = []; 
 
-    $teams = loadTeams('../data/teams.json');
-
-    if (!empty($teamName) && !array_key_exists($teamName, array_column($teams, 'team_name', 'team_name'))) {
-        $teams[] = ['team_name' => $teamName, 'players' => $players];
-        saveTeams('../data/teams.json', $teams);
+    if (!empty($teamName)) {
+        $stmt = $db->prepare("INSERT INTO teams (team_name) VALUES (?)");
+        $stmt->bind_param('s', $teamName);
+        if ($stmt->execute()) {
+            $success = "Team added successfully!";
+        } else {
+            $error = "Failed to add team: " . $stmt->error;
+        }
     }
 }
 
 if (isset($_GET['delete_team'])) {
     $teamToDelete = htmlspecialchars(trim($_GET['delete_team']));
 
-    $teams = loadTeams('../data/teams.json');
-
-    $teams = array_filter($teams, function ($team) use ($teamToDelete) {
-        return $team['team_name'] !== $teamToDelete;
-    });
-
-    saveTeams('../data/teams.json', $teams);
+    $stmt = $db->prepare("DELETE FROM teams WHERE team_name = ?");
+    $stmt->bind_param('s', $teamToDelete);
+    if ($stmt->execute()) {
+        $success = "Team deleted successfully!";
+    } else {
+        $error = "Failed to delete team: " . $stmt->error;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_player'])) {
@@ -46,19 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_player'])) {
     $playerName = htmlspecialchars(trim($_POST['player_name']));
     $playerNumber = htmlspecialchars(trim($_POST['player_number']));
 
-    $teams = loadTeams('../data/teams.json');
-
-    foreach ($teams as &$team) {
-        if ($team['team_name'] === $teamName) {
-            $team['players'][] = ['name' => $playerName, 'number' => $playerNumber];
-            break;
+    if (!empty($teamName) && !empty($playerName) && !empty($playerNumber)) {
+        $stmt = $db->prepare("INSERT INTO teams (team_name, player_name, player_number) VALUES (?, ?, ?)");
+        $stmt->bind_param('ssi', $teamName, $playerName, $playerNumber);
+        if ($stmt->execute()) {
+            $success = "Player added successfully!";
+        } else {
+            $error = "Failed to add player: " . $stmt->error;
         }
     }
-
-    saveTeams('../data/teams.json', $teams);
 }
 
-$teams = loadTeams('../data/teams.json');
+$teams = loadTeams($db);
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +86,15 @@ $teams = loadTeams('../data/teams.json');
 <body>
     <div class="container mt-5">
         <h1>Manage Teams</h1>
+
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+
+        <?php if (isset($success)): ?>
+            <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+        <?php endif; ?>
+
         <form action="manage-teams.php" method="post" class="mb-4">
             <div class="mb-3">
                 <label for="team_name" class="form-label">Team Name</label>

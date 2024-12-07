@@ -6,22 +6,31 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'viewer') {
     exit();
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+require_once '../lib/db.php';
+
+function loadTeams($db) {
+    $query = "SELECT team_name, player_name, player_number 
+              FROM teams 
+              ORDER BY team_name ASC, player_number ASC";
+    $result = $db->query($query);
+
+    $teams = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $teamName = $row['team_name'];
+            if (!isset($teams[$teamName])) {
+                $teams[$teamName] = ['team_name' => $teamName, 'players' => []];
+            }
+            $teams[$teamName]['players'][] = [
+                'name' => $row['player_name'],
+                'number' => $row['player_number']
+            ];
+        }
     }
-    return [];
+    return array_values($teams);
 }
 
-function loadGames($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
-    }
-    return [];
-}
-
-$teams = loadTeams('../data/teams.json');
-$games = loadGames('../data/games.json');
+$teams = loadTeams($db);
 ?>
 <?php include('../theme/header.php'); ?>
 
@@ -30,13 +39,12 @@ $games = loadGames('../data/games.json');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoreboard</title>
+    <title>Teams</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-5">
-        <h1></h1>
-        <h2>All Teams</h2>
+        <h1>All Teams</h1>
         <ul class="list-group mb-4">
             <?php foreach ($teams as $team): ?>
                 <li class="list-group-item">
@@ -54,4 +62,7 @@ $games = loadGames('../data/games.json');
     </div>
 </body>
 </html>
+<<<<<<< HEAD
 <?php include('../theme/footer.php'); ?>
+=======
+>>>>>>> 4afe6b4055b0b623e5b03bf70d5a827a0173dd5f

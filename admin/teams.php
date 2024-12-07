@@ -1,27 +1,41 @@
 <?php
 session_start();
 
+// Ensure the user is authenticated and has the "scorekeeper" role
 if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'scorekeeper') {
     header('Location: login.php');
     exit();
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+// Include the database connection
+require_once '../lib/db.php';
+
+// Function to load teams and players from the database
+function loadTeams($db) {
+    $query = "SELECT team_name, player_name, player_number 
+              FROM teams 
+              ORDER BY team_name ASC, player_number ASC";
+    $result = $db->query($query);
+
+    $teams = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $teamName = $row['team_name'];
+            if (!isset($teams[$teamName])) {
+                $teams[$teamName] = ['team_name' => $teamName, 'players' => []];
+            }
+            if ($row['player_name'] && $row['player_number']) {
+                $teams[$teamName]['players'][] = [
+                    'name' => $row['player_name'],
+                    'number' => $row['player_number']
+                ];
+            }
+        }
     }
-    return [];
+    return array_values($teams);
 }
 
-function loadGames($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
-    }
-    return [];
-}
-
-$teams = loadTeams('../data/teams.json');
-$games = loadGames('../data/games.json');
+$teams = loadTeams($db);
 ?>
 
 <!DOCTYPE html>
@@ -34,8 +48,7 @@ $games = loadGames('../data/games.json');
 </head>
 <body>
     <div class="container mt-5">
-        <h1></h1>
-        <h2>All Teams</h2>
+        <h1>All Teams</h1>
         <ul class="list-group mb-4">
             <?php foreach ($teams as $team): ?>
                 <li class="list-group-item">

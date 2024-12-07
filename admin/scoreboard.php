@@ -6,22 +6,48 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'scorekeeper') {
     exit();
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+require_once '../lib/db.php';
+
+function loadTeams($db) {
+    $query = "SELECT team_name FROM teams GROUP BY team_name ORDER BY team_name ASC";
+    $result = $db->query($query);
+
+    $teams = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $teams[] = $row['team_name'];
+        }
     }
-    return [];
+    return $teams;
 }
 
-function loadGames($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+function loadGames($db) {
+    $query = "SELECT g.game_date AS date, 
+                     home.team_name AS home_team, home.score AS home_score, 
+                     away.team_name AS away_team, away.score AS away_score
+              FROM games g
+              JOIN game_teams home ON g.game_id = home.game_id AND home.is_home = 1
+              JOIN game_teams away ON g.game_id = away.game_id AND away.is_home = 0
+              ORDER BY g.game_date ASC";
+    $result = $db->query($query);
+
+    $games = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $games[] = [
+                'teams' => [
+                    'home' => ['name' => $row['home_team'], 'score' => $row['home_score']],
+                    'away' => ['name' => $row['away_team'], 'score' => $row['away_score']]
+                ],
+                'date' => $row['date']
+            ];
+        }
     }
-    return [];
+    return $games;
 }
 
-$teams = loadTeams('../data/teams.json');
-$games = loadGames('../data/games.json');
+$teams = loadTeams($db);
+$games = loadGames($db);
 ?>
 
 <!DOCTYPE html>

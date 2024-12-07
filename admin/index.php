@@ -6,39 +6,70 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'scorekeeper') {
     exit();
 }
 
-function loadUsers($filename) {
+require_once '../lib/db.php';
+
+function loadUsers($db) {
+    $query = "SELECT id, name, email, role FROM users ORDER BY id ASC";
+    $result = $db->query($query);
+
     $users = [];
-    if (($handle = fopen($filename, 'r')) !== FALSE) {
-        while (($data = fgetcsv($handle)) !== FALSE) {
-            $users[] = [
-                'id' => $data[0],
-                'name' => $data[1],
-                'email' => $data[2],
-                'role' => $data[4],
-            ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
         }
-        fclose($handle);
     }
     return $users;
 }
 
-function loadTeams($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+function loadTeams($db) {
+    $query = "SELECT team_name, player_name, player_number FROM teams ORDER BY team_name ASC, player_number ASC";
+    $result = $db->query($query);
+
+    $teams = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $teamName = $row['team_name'];
+            if (!isset($teams[$teamName])) {
+                $teams[$teamName] = ['team_name' => $teamName, 'players' => []];
+            }
+            $teams[$teamName]['players'][] = [
+                'name' => $row['player_name'],
+                'number' => $row['player_number']
+            ];
+        }
     }
-    return [];
+    return array_values($teams);
 }
 
-function loadGames($filename) {
-    if (file_exists($filename)) {
-        return json_decode(file_get_contents($filename), true);
+function loadGames($db) {
+    $query = "SELECT g.game_id, g.game_date AS date, 
+                     home.team_name AS home_team, home.score AS home_score, 
+                     away.team_name AS away_team, away.score AS away_score
+              FROM games g
+              JOIN game_teams home ON g.game_id = home.game_id AND home.is_home = 1
+              JOIN game_teams away ON g.game_id = away.game_id AND away.is_home = 0
+              ORDER BY g.game_date ASC";
+    $result = $db->query($query);
+
+    $games = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $games[] = [
+                'game_id' => $row['game_id'],
+                'teams' => [
+                    'home' => ['name' => $row['home_team'], 'score' => $row['home_score']],
+                    'away' => ['name' => $row['away_team'], 'score' => $row['away_score']]
+                ],
+                'date' => $row['date']
+            ];
+        }
     }
-    return [];
+    return $games;
 }
 
-$users = loadUsers('../data/users.csv');
-$teams = loadTeams('../data/teams.json');
-$games = loadGames('../data/games.json');
+$users = loadUsers($db);
+$teams = loadTeams($db);
+$games = loadGames($db);
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +85,7 @@ $games = loadGames('../data/games.json');
         <h1>Scorekeeper Dashboard</h1>
         <a href="manage-games.php" class="btn btn-primary">Add/Edit a Game</a>
         <a href="manage-teams.php" class="btn btn-primary">Add/Edit a Team</a>
+
         <h2>Teams</h2>
         <ul class="list-group">
             <?php foreach (array_slice($teams, 0, 3) as $team): ?>
