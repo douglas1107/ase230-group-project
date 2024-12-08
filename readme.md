@@ -14,8 +14,10 @@
 - Worked on if statements in login.php and logout.php
 ## Final
 - Created sql database tables
-- Switched Admin folders to use sql database instead of data files for CRUD operations
-- 
+- Created import-datatype.php files to parse data to the database
+- Switched all files to pull the data from the sql database instead of json or csv files for the CRUD operations
+- Added password hashing
+
 ### Sean Cancel
 - Helped to make the login, home, and register pages of code.
 - Helped to debug.
