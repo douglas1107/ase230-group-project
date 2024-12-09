@@ -8,10 +8,6 @@
 
 ## Team Members
 ### Douglas Broughton
-## Midterm 
-- Created and managed repository, Created folder and file structure 
-- Built index.php and the admin pages functions
-- Worked on if statements in login.php and logout.php
 ## Final
 - Created sql database tables
 - Created import-datatype.php files to parse data to the database
