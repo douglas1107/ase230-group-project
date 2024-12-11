@@ -63,6 +63,9 @@ $teams = loadTeams($db);
 $games = loadGames($db);
 ?>
 
+<?php include('../themes/header.php'); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,3 +131,5 @@ $games = loadGames($db);
     </div>
 </body>
 </html>
+
+<?php include('../themes/footer.php'); ?>

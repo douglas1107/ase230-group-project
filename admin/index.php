@@ -6,6 +6,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'scorekeeper') {
     exit();
 }
 
+
 require_once '../lib/db.php';
 
 function loadUsers($db) {

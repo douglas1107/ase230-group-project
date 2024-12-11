@@ -7,6 +7,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'viewer') {
     exit();
 }
 
+
 // Include the database connection
 require_once '../lib/db.php';
 

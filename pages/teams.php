@@ -32,6 +32,8 @@ function loadTeams($db) {
 
 $teams = loadTeams($db);
 ?>
+<?php include('../themes/header.php'); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,3 +63,4 @@ $teams = loadTeams($db);
     </div>
 </body>
 </html>
+<?php include('../themes/footer.php'); ?>

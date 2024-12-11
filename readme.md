@@ -1,7 +1,7 @@
 # Final - Scorekeeper app
 
 ## Youtube
-- https://youtu.be/9_ZSuCXiAUI
+- https://www.youtube.com/watch?v=uMJftiiRZYU
 
 ## Description
 - Our app allows users to create an account as either a viewer or scorekeeper, then sign in. Once signed in, they will have different privileges based on their role; if they are a viewer, they can simply just view teams and games. If they are a scorekeeper, they will be given access to the scorekeeper dashboard, where they will be able to create, delete, and edit games and teams. Once finished, they can log out of their account.

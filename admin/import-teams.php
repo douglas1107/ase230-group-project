@@ -18,6 +18,7 @@ if ($teams === null) {
 }
 
 
+
 $stmt = $db->prepare("INSERT INTO teams (team_name, player_name, player_number) VALUES (?, ?, ?)");
 
 
